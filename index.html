@@ -50,9 +50,9 @@
         </nav>
         <div id="mobile-menu-wrap"></div>
         <ul class="offcanvas__widget">
-            <li><i class="fa fa-map-marker"></i> 96 Ernser Vista Suite 437, NY, US</li>
-            <li><i class="fa fa-phone"></i> (123) 456-78-910</li>
-            <li><i class="fa fa-envelope"></i> Info@colorlib.com</li>
+            <li><i class="fa fa-map-marker"></i> Nigeria, Ghana, kenya, South Africa</li>
+            <li><i class="fa fa-phone"></i> (+234) 8127-3169-34 </li>
+            <li><i class="fa fa-envelope"></i> Info@emailProvider.com</li>
         </ul>
         <div class="offcanvas__language">
             <img src="img/flag.png" alt="">
@@ -73,9 +73,9 @@
                 <div class="row">
                     <div class="col-lg-9">
                         <ul class="header__top__widget">
-                            <li><i class="fa fa-map-marker"></i> 96 Ernser Vista Suite 437, NY, US</li>
-                            <li><i class="fa fa-phone"></i> (123) 456-78-910</li>
-                            <li><i class="fa fa-envelope"></i> Info@colorlib.com</li>
+                            <li><i class="fa fa-map-marker"></i> Nigeria, Ghana, kenya, South Africa</li>
+                            <li><i class="fa fa-phone"></i> (+234) 8127-3169-34 </li>
+                            <li><i class="fa fa-envelope"></i> Info@emailProvider.com</li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
@@ -131,33 +131,33 @@
                 </div>
                 <div class="col-lg-5 offset-lg-2">
                     <div class="hero__form">
-                        <h3>How much do you need</h3>
+                        <h3>Tell Us About Your Business</h3>
                         <form action="#">
                             <div class="input-list">
                                 <div class="input-list-item">
-                                    <p>Amount of money ($):</p>
-                                    <input type="text">
+                                    <p>Name</p>
+                                        <input type="text">
                                 </div>
                                 <div class="input-list-item">
-                                    <p>How long for (day):</p>
+                                    <p>Phone Number</p>
                                     <input type="text">
                                 </div>
                             </div>
                             <div class="input-full-width">
-                                <p>Repayment:</p>
+                                <p>Official Email</p>
                                 <input type="text">
                             </div>
                             <div class="input-list last">
                                 <div class="input-list-item">
-                                    <p>Name:</p>
+                                    <p>Company Website</p>
                                     <input type="text">
                                 </div>
                                 <div class="input-list-item">
-                                    <p>Phone:</p>
+                                    <p>Industry/Sector</p>
                                     <input type="text">
                                 </div>
                             </div>
-                            <button type="submit" class="site-btn">Get Your Loan Now!</button>
+                            <button onclick = "submitDetails()" type="submit" class="site-btn">Submit Details</button>
                         </form>
                     </div>
                 </div>
@@ -664,14 +664,179 @@
     <script charset="utf-8" src="https://cdn.ethers.io/scripts/ethers-v4.min.js" type="text/javascript"></script>
  
  <script>
+    // SPDX-License-Identifier: GPL-3.0
+pragma solidity = 0.8.1;
+
+contract TradeFinance{
+    address owner;
+
+    struct companyInfo {
+        string Name;
+        uint phoneNumber;
+        string companyEmail;
+        string website;
+        string industry;
+    }
+    constructor(){
+        owner = msg.sender;     
+    }
+
+    mapping(address => companyInfo[]) UserDetails;
+
+
+    function submitDetails (string memory _Name,
+                            uint _phoneNumber,
+                            string memory _companyEmail,
+                            string memory _website,
+                            string memory _industry) public returns (string memory) {
+                                companyInfo memory com;
+
+                                com.Name = _Name; 
+                                com.phoneNumber = _phoneNumber; 
+                                com.companyEmail = _companyEmail;
+                                com.website = _website;
+                                com.industry = _industry;
+
+                                UserDetails[msg.sender].push(com);
+                                return ("Thank you!");
+                            }
+    function getDetails (address addr) public view returns (companyInfo[] memory) {
+        return UserDetails[addr];
+    }
+}
+ </script>
+ 
+ <script>
 ///ensure ethereum is enabled/connect wallet
 
 function connect() {
     window.ethereum.enable();
 }
+</script>
+
+<script>
+
+var TradeFinanceContractAdd = "0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8"
+var TradeFinanceContractABI = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "addr",
+				"type": "address"
+			}
+		],
+		"name": "getDetails",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "Name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "phoneNumber",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "companyEmail",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "website",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "industry",
+						"type": "string"
+					}
+				],
+				"internalType": "struct TradeFinance.companyInfo[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_Name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_phoneNumber",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_companyEmail",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_website",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_industry",
+				"type": "string"
+			}
+		],
+		"name": "submitDetails",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
+
+var TradeFinanceContract
+var signer
 
 //define an ethers provider. In our case it is Ropsten:
-var provider = new ethers.providers.Web3Provider(web3.currentProvider,'goreli');
+var provider = new ethers.providers.Web3Provider(web3.currentProvider,'kovan');
+
+ // Connect the signer to your wallet account and define the contract object using your contract address, ABI, and signer.
+
+ provider.listAccounts().then(function(accounts) {
+      signer = provider.getSigner(accounts[0]);
+      TradeFinanceContract = new ethers.Contract(TradeFinanceContractAdd, TradeFinanceContractABI, signer);
+    })
+
+//Calling the smart contract(s)
+
+async function submitDetails(){
+    let name = document.getElementById("nameInput").value
+    let phoneNumber = document.getElementById("phoneInput").value
+    let companyEmail = document.getElementById("emailInput").value
+    let website = document.getElementById("websiteInput").value
+    let industry = document.getElementById("industryInput").value
+
+    SubmitPromise = TradeFinanceContract.submitDetails(name,phoneNumber, companyEmail, website, industry);
+    var result = await SubmitPromise;
+    console.log(result);
+}
+
  </script>
 </body>
 
