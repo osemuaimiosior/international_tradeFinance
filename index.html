@@ -157,7 +157,7 @@
                                     <input type="text" id="industryInput">
                                 </div>
                             </div>
-                            <button onclick = "submitDetails()" type="submit" class="site-btn">Submit Details</button>
+                            <button onclick= "submitDetails()" type="submit" class="site-btn">Submit Details</button>
                         </form>
                     </div>
                 </div>
@@ -777,7 +777,7 @@ function submitDetails(){
     let industry = document.getElementById("industryInput").value;
 
     TradeFinanceContract.submitDetails(name,phoneNumber, companyEmail, website, industry);
-    console.log("Congratulations, You Earned Double");
+    alert("Thank you");
 }
 
  </script>
