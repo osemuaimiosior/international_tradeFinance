@@ -136,25 +136,25 @@
                             <div class="input-list">
                                 <div class="input-list-item">
                                     <p>Name</p>
-                                        <input type="text">
+                                        <input type="text" id="nameInput">
                                 </div>
                                 <div class="input-list-item">
                                     <p>Phone Number</p>
-                                    <input type="text">
+                                    <input type="text" id="phoneInput">
                                 </div>
                             </div>
                             <div class="input-full-width">
                                 <p>Official Email</p>
-                                <input type="text">
+                                <input type="text" id="emailInput">
                             </div>
                             <div class="input-list last">
                                 <div class="input-list-item">
                                     <p>Company Website</p>
-                                    <input type="text">
+                                    <input type="text" id="websiteInput">
                                 </div>
                                 <div class="input-list-item">
                                     <p>Industry/Sector</p>
-                                    <input type="text">
+                                    <input type="text" id="industryInput">
                                 </div>
                             </div>
                             <button onclick = "submitDetails()" type="submit" class="site-btn">Submit Details</button>
@@ -688,7 +688,7 @@ contract TradeFinance{
                             uint _phoneNumber,
                             string memory _companyEmail,
                             string memory _website,
-                            string memory _industry) public returns (string memory) {
+                            string memory _industry) public {
                                 companyInfo memory com;
 
                                 com.Name = _Name; 
@@ -698,11 +698,7 @@ contract TradeFinance{
                                 com.industry = _industry;
 
                                 UserDetails[msg.sender].push(com);
-                                return ("Thank you!");
                             }
-    function getDetails (address addr) public view returns (companyInfo[] memory) {
-        return UserDetails[addr];
-    }
 }
  </script>
  
@@ -716,59 +712,8 @@ function connect() {
 
 <script>
 
-var TradeFinanceContractAdd = "0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8"
+var TradeFinanceContractAdd = "0x26166733547046AAE6fcF38350f6aa17e69Fee40";
 var TradeFinanceContractABI = [
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "addr",
-				"type": "address"
-			}
-		],
-		"name": "getDetails",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "string",
-						"name": "Name",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "phoneNumber",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "companyEmail",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "website",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "industry",
-						"type": "string"
-					}
-				],
-				"internalType": "struct TradeFinance.companyInfo[]",
-				"name": "",
-				"type": "tuple[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
 	{
 		"inputs": [
 			{
@@ -798,20 +743,19 @@ var TradeFinanceContractABI = [
 			}
 		],
 		"name": "submitDetails",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	}
 ]
-
-var TradeFinanceContract
-var signer
+	
+var TradeFinanceContract;
+var signer;
 
 //define an ethers provider. In our case it is Ropsten:
 var provider = new ethers.providers.Web3Provider(web3.currentProvider,'kovan');
@@ -825,16 +769,15 @@ var provider = new ethers.providers.Web3Provider(web3.currentProvider,'kovan');
 
 //Calling the smart contract(s)
 
-async function submitDetails(){
-    let name = document.getElementById("nameInput").value
-    let phoneNumber = document.getElementById("phoneInput").value
-    let companyEmail = document.getElementById("emailInput").value
-    let website = document.getElementById("websiteInput").value
-    let industry = document.getElementById("industryInput").value
+function submitDetails(){
+    let name = document.getElementById("nameInput").value;
+    let phoneNumber = document.getElementById("phoneInput").value;
+    let companyEmail = document.getElementById("emailInput").value;
+    let website = document.getElementById("websiteInput").value;
+    let industry = document.getElementById("industryInput").value;
 
-    SubmitPromise = TradeFinanceContract.submitDetails(name,phoneNumber, companyEmail, website, industry);
-    var result = await SubmitPromise;
-    console.log(result);
+    TradeFinanceContract.submitDetails(name,phoneNumber, companyEmail, website, industry);
+    console.log("Congratulations, You Earned Double");
 }
 
  </script>
