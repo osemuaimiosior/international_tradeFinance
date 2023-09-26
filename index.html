@@ -80,7 +80,7 @@
                     </div>
                     <div class="col-lg-3">
                         <div class="header__top__language">
-                            <button onclick="connect()" class="btn">Connect Wallet</button>
+                            <button onclick="connect()" class="btn">Login</button>
                         </div>
                     </div>
                 </div>
@@ -769,6 +769,19 @@ var provider = new ethers.providers.Web3Provider(web3.currentProvider,'kovan');
 
 //Calling the smart contract(s)
 
+window.onload = (event) =>{
+    isConnected();
+};
+
+async function isConnected(){
+    const accounts = await ethereum.request({method: "eth_accounts"})
+    if (accounts.length){
+        console.log("wallect connected");
+    } else{
+        setTimeout(function(){alert ("connect wallet")}, 2000);
+    }
+}
+
 function submitDetails(){
     let name = document.getElementById("nameInput").value;
     let phoneNumber = document.getElementById("phoneInput").value;
@@ -776,10 +789,13 @@ function submitDetails(){
     let website = document.getElementById("websiteInput").value;
     let industry = document.getElementById("industryInput").value;
 
-    TradeFinanceContract.submitDetails(name,phoneNumber, companyEmail, website, industry);
-    alert("Thank you");
+   if (name.length != 0 && phoneNumber.length != 0 && companyEmail.length != 0 && website.length != 0 && industry.length != 0){
+        TradeFinanceContract.submitDetails(name,phoneNumber, companyEmail, website, industry);
+        setTimeout(function(){alert("Thank you")}, 500);
+    } else{
+        alert("Fill out the form correctly");
+    }
 }
-
  </script>
 </body>
 
